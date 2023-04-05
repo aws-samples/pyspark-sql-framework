@@ -40,17 +40,18 @@ aws s3api create-bucket --bucket $s3_bucket_name
 ```
 
 4. Clone project locally 
-git clone https://gitlab.aws.dev/gcci-dataanalytics/emr_pyspark_framework.git
+git clone https://github.com/aws-samples/pyspark-sql-framework.git
 
 5. Create a ZIP File and upload to the code bucket created earlier:
 ```shell 
-cd emr_pyspark_framework
-zip code.zip ./code/*
+cd pyspark-sql-framework/code
+zip code.zip -r *
 aws s3 cp ./code.zip s3://$s3_bucket_name/framework/code.zip
 ```
 
 6. Upload drive code to S3 bucket 
 ```shell
+cd $OLDPWD/pyspark-sql-framework
 aws s3 cp ./code/etl_driver.py s3://$s3_bucket_name/framework/
 ```
 
@@ -131,5 +132,5 @@ aws emr add-steps \
   - Add below spark step
 
 ```shell 
-spark-submit --deploy-mode client --master yarn --name sample_oozie_job_name --conf spark.sql.shuffle.partitions=5760 --conf spark.dynamicAllocation.maxExecutors=30  --py-files s3://unique-code-bucket-name/dags/code.zip s3://unique-code-bucket-name/dags/etl_driver.py --step_id 'sample_oozie_job_name#states_daily' --job_run_id 'sample_oozie_job_name#states_daily#2022-01-01-12-00-01'  --code_bucket=s3://unique-code-bucket-name/DW --metadata_table=dw-etl-metadata --log_table_name=dw-etl-pipelinelog --sql_parameters DATE=2022-02-02::HOUR=12
+spark-submit --deploy-mode client --master yarn --name sample_oozie_job_name --conf spark.sql.shuffle.partitions=5760 --conf spark.dynamicAllocation.maxExecutors=30  --py-files s3://unique-code-bucket-name/framework/code.zip s3://unique-code-bucket-name/framework/etl_driver.py --step_id 'sample_oozie_job_name#states_daily' --job_run_id 'sample_oozie_job_name#states_daily#2022-01-01-12-00-01'  --code_bucket=s3://unique-code-bucket-name/DW --metadata_table=dw-etl-metadata --log_table_name=dw-etl-pipelinelog --sql_parameters DATE=2022-02-02::HOUR=12
 
