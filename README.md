@@ -1,4 +1,4 @@
-## emr_pyspark_framework
+## pyspark-sql-framework
 
 Metadata driven framework built using Pyspark to support SQL executions on EMR. 
 Framework uses DynamoDB tables for defining the configuration for each Job. Each job can be further divided into Steps and each Step could have N number of SQL for performing ETL. 
